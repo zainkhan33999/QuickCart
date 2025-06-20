@@ -1,6 +1,6 @@
      
      import { serve } from "inngest/next";
-     import { inngest, syncUserCreation, syncUserDeletion } from "../../config/inggest";
+     import { inngest, syncUserCreation, syncUserDeletion } from "../../../config/inggest";
      
      
      export const { GET, POST, PUT } = serve({
@@ -11,4 +11,4 @@
         syncUserDeletion,   
        ],
      });
-     
+        
