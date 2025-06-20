@@ -7,49 +7,48 @@ export const inngest = new Inngest({ id: "quick-cart" });
 
 export const syncUserCreation = inngest.createFunction(
     {
-        id:"sync-user-form-clerk"
+        id: "sync-user-creation-from-clerk"  // Changed to be unique
     },
-    {event:"clerk/user.created"},
-    async({event})=>{
-    const {id,first_name,last_name,email_addresses,image_url} = event.data
-    const userData ={
-        _id:id,
-        email:email_addresses[0].email_address,
-        name:first_name + " " + last_name,
-        imageUrl:image_url,
+    { event: "clerk/user.created" },
+    async({ event }) => {
+        const { id, first_name, last_name, email_addresses, image_url } = event.data;
+        const userData = {
+            _id: id,
+            email: email_addresses[0].email_address,
+            name: first_name + " " + last_name,
+            imageUrl: image_url,
+        };
+        await connectDB();
+        await User.create(userData);
     }
-    await connectDB()
-    await User.create(userData)
-    }
-)
-
+);
 
 export const syncUserUpdation = inngest.createFunction(
     {
-        id:'update-user-form-clerk'
+        id: "sync-user-updation-from-clerk"  // Changed to be unique
     },
-    {event:'clerk/user.updated'},
-    async({event}) =>{
-        const {id,first_name,last_name,email_addresses,image_url} = event.data
-    const userData ={
-        _id:id,
-        email:email_addresses[0].email_address,
-        name:first_name + " " + last_name,
-        imageUrl:image_url,
+    { event: "clerk/user.updated" },
+    async({ event }) => {
+        const { id, first_name, last_name, email_addresses, image_url } = event.data;
+        const userData = {
+            _id: id,
+            email: email_addresses[0].email_address,
+            name: first_name + " " + last_name,
+            imageUrl: image_url,
+        };
+        await connectDB();
+        await User.findByIdAndUpdate(id, userData);
     }
-    await connectDB() 
-    await User.findByIdAndUpdate(id,userData) }
-)
-
+);
 
 export const syncUserDeletion = inngest.createFunction(
     {
-        id:'delete-user-with-clerk'
+        id: "sync-user-deletion-from-clerk"  // Changed to be unique
     },
-    {event:"clerk/user.deleted"},
-async({event})=>{
-    const {id} = event.data
-    await  connectDB()
-    await User.findByIdAndDelete(id)
-}
-)
+    { event: "clerk/user.deleted" },
+    async({ event }) => {
+        const { id } = event.data;
+        await connectDB();
+        await User.findByIdAndDelete(id);
+    }
+);
