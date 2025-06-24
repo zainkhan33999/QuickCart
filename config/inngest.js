@@ -42,14 +42,14 @@ export const syncUserUpdation = inngest.createFunction(
 )
 
 
-// export const syncUserDeletion = inngest.createFunction(
-//     {
-//         id:'delete-user-with-clerk'
-//     },
-//     {event:"clerk/user.deleted"},
-// async({event})=>{
-//     const {id} = event.data
-//     await  connectDB()
-//     await User.findByIdAndDelete(id)
-// }
-// )
+export const syncUserDeletion = inngest.createFunction(
+    {
+        id:'delete-user-with-clerk'
+    },
+    {event:"clerk/user.deleted"},
+async({event})=>{
+    const {id} = event.data
+    await  connectDB()
+    await User.findByIdAndDelete(id)
+}
+)
